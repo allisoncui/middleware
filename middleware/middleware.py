@@ -3,18 +3,17 @@ from datetime import datetime
 from fastapi import Request
 import os
 
-log_dir = os.path.join(os.getcwd(), "logs")
-log_file_path = os.path.join(log_dir, "microservice.log")
+log_dir = os.getenv("LOG_DIR", "./logs")
+log_file = os.path.join(log_dir, "microservice.log")
 
-if not os.path.exists(log_dir):
-    os.makedirs(log_dir)
+os.makedirs(log_dir, exist_ok=True)
 
 # Configure logging
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(levelname)s - %(message)s",
     handlers=[
-        logging.FileHandler(log_file_path),  # Logs to a file
+        logging.FileHandler(log_file),  # Logs to a file
         logging.StreamHandler()  # Logs to the console
     ]
 )
